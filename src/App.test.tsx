@@ -39,7 +39,7 @@ describe('App Component', () => {
 
     // Check if error message for favoriteGame is displayed
     expect(
-      screen.getByText(/Please provide a favorite gameq/i)
+      screen.getByText(/Please provide a favorite game/i)
     ).toBeInTheDocument();
   });
 
