@@ -2,8 +2,9 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import './App.css';
 import { formDataSchema } from './schemas';
 import { z } from 'zod';
+import Form from './components/Form';
 
-type FormData = {
+export type FormData = {
   username: string;
   email: string;
   playGames: boolean;
@@ -22,6 +23,9 @@ function App() {
     favoriteGame: '',
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+
+  const [showZodOnly, setShowZodOnly] = useState<boolean>(true);
+  const [showRHF, setShowRHF] = useState<boolean>(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -63,61 +67,84 @@ function App() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleInputChange}
-        />
-      </label>
-      {formErrors.username && (
-        <span style={{ color: 'red' }}>{formErrors.username}</span>
-      )}
-      <label>
-        Email:
-        <input
-          type="text"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-        />
-      </label>
-      {formErrors.email && (
-        <span style={{ color: 'red' }}>{formErrors.email}</span>
-      )}
-
-      <label>
-        Do you play games?
-        <input
-          type="checkbox"
-          name="playGames"
-          checked={formData.playGames}
-          onChange={handleInputChange}
-        />
-      </label>
-
-      {formData.playGames && (
-        <>
+    <>
+      <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+        <button
+          onClick={() => {
+            setShowZodOnly(true);
+            setShowRHF(false);
+          }}
+        >
+          Show Zod only
+        </button>
+        <button
+          onClick={() => {
+            setShowZodOnly(false);
+            setShowRHF(true);
+          }}
+        >
+          Show Zod With react Hook form
+        </button>
+      </div>
+      {showZodOnly && (
+        <form onSubmit={handleSubmit}>
           <label>
-            What is your favourite game?
+            Username:
             <input
               type="text"
-              name="favoriteGame"
-              value={formData.favoriteGame}
+              name="username"
+              value={formData.username}
               onChange={handleInputChange}
             />
           </label>
-          {formErrors.favoriteGame && (
-            <span style={{ color: 'red' }}>{formErrors.favoriteGame}</span>
+          {formErrors.username && (
+            <span style={{ color: 'red' }}>{formErrors.username}</span>
           )}
-        </>
-      )}
+          <label>
+            Email:
+            <input
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+            />
+          </label>
+          {formErrors.email && (
+            <span style={{ color: 'red' }}>{formErrors.email}</span>
+          )}
 
-      <button type="submit">Submit</button>
-    </form>
+          <label>
+            Do you play games?
+            <input
+              type="checkbox"
+              name="playGames"
+              checked={formData.playGames}
+              onChange={handleInputChange}
+            />
+          </label>
+
+          {formData.playGames && (
+            <>
+              <label>
+                What is your favourite game?
+                <input
+                  type="text"
+                  name="favoriteGame"
+                  value={formData.favoriteGame}
+                  onChange={handleInputChange}
+                />
+              </label>
+              {formErrors.favoriteGame && (
+                <span style={{ color: 'red' }}>{formErrors.favoriteGame}</span>
+              )}
+            </>
+          )}
+
+          <button type="submit">Submit</button>
+        </form>
+      )}
+      {showRHF && <Form />}
+    </>
   );
 }
 
