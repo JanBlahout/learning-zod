@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { formDataSchema } from '../schemas';
 import { z } from 'zod';
 
-type FormValues = z.infer<typeof formDataSchema>;
+export type FormValues = z.infer<typeof formDataSchema>;
 
 const Form = () => {
   const {
@@ -24,7 +24,7 @@ const Form = () => {
   const watchPlayGames = watch('playGames');
 
   return (
-    <form onSubmit={handleSubmit((d) => console.log(d))}>
+    <form onSubmit={handleSubmit((d: FormValues) => console.log(d))}>
       <>
         <label htmlFor="username">
           Username: <input {...register('username')} />
