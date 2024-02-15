@@ -18,4 +18,7 @@ export const formDataSchema = z
         path: ['favoriteGame'],
       });
     }
+    if (values.playGames === false) {
+      values.favoriteGame = '';
+    }
   });
