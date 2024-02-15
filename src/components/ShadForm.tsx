@@ -24,7 +24,6 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 
 export function ShadForm() {
-  // ...
   const form = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
@@ -37,6 +36,8 @@ export function ShadForm() {
       monthofBirth: 'january',
     },
   });
+
+  const watchPlayGames = form.watch('playGames');
 
   function onSubmit(values: z.infer<typeof formDataSchema>) {
     // Do something with the form values.
@@ -103,19 +104,21 @@ export function ShadForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="favoriteGame"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Favorite game</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {watchPlayGames && (
+          <FormField
+            control={form.control}
+            name="favoriteGame"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Favorite game</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="password"
