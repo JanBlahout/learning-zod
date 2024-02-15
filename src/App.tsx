@@ -4,6 +4,8 @@ import { formDataSchema, mappedMonths } from './schemas';
 import { z } from 'zod';
 import Form from './components/Form';
 import { FormValues } from './components/Form';
+import { Button } from '@/components/ui/button';
+import { ShadForm } from './components/ShadForm';
 
 interface FormErrors {
   [key: string]: string | undefined;
@@ -24,6 +26,7 @@ function App() {
 
   const [showZodOnly, setShowZodOnly] = useState<boolean>(true);
   const [showRHF, setShowRHF] = useState<boolean>(false);
+  const [showShad, setShowShad] = useState<boolean>(false);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -74,22 +77,33 @@ function App() {
   return (
     <>
       <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-        <button
+        <Button
           onClick={() => {
             setShowZodOnly(true);
             setShowRHF(false);
+            setShowShad(false);
           }}
         >
           Show Zod only
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => {
             setShowZodOnly(false);
             setShowRHF(true);
+            setShowShad(false);
           }}
         >
           Show Zod With react Hook form
-        </button>
+        </Button>
+        <Button
+          onClick={() => {
+            setShowZodOnly(false);
+            setShowRHF(false);
+            setShowShad(true);
+          }}
+        >
+          Show ShadCN
+        </Button>
       </div>
       {showZodOnly && (
         <form onSubmit={handleSubmit}>
@@ -181,6 +195,7 @@ function App() {
         </form>
       )}
       {showRHF && <Form />}
+      {showShad && <ShadForm />}
     </>
   );
 }
