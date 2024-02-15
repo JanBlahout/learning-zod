@@ -1,28 +1,26 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import './App.css';
-import { formDataSchema } from './schemas';
+import { formDataSchema, mappedMonths } from './schemas';
 import { z } from 'zod';
 import Form from './components/Form';
-
-export type FormData = {
-  username: string;
-  email: string;
-  playGames: boolean;
-  favoriteGame: string;
-};
+import { FormValues } from './components/Form';
 
 interface FormErrors {
   [key: string]: string | undefined;
 }
 
 function App() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormValues>({
     username: '',
     email: '',
+    password: '',
+    confirmPassword: '',
+    monthofBirth: 'january',
     playGames: false,
     favoriteGame: '',
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [sucessMessage, setSuccessMessage] = useState('');
 
   const [showZodOnly, setShowZodOnly] = useState<boolean>(true);
   const [showRHF, setShowRHF] = useState<boolean>(false);
@@ -37,17 +35,24 @@ function App() {
     setFormErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
   };
 
+  const monthOptions = Object.entries(mappedMonths).map(([value, label]) => (
+    <option value={value} key={value}>
+      {label}
+    </option>
+  ));
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       // Validate the form data using the Zod schema
-      const validatedData = formDataSchema.parse(formData) as FormData;
+      const validatedData = formDataSchema.parse(formData) as FormValues;
       console.log('Form data is valid:', validatedData);
       // Perform form submission or other actions
 
       // Reset errors if successful
       setFormErrors({});
+      setSuccessMessage('Form submitted successfully');
     } catch (error) {
       if (error instanceof z.ZodError) {
         console.error('Form validation failed:', error.errors);
@@ -112,6 +117,37 @@ function App() {
           {formErrors.email && (
             <span style={{ color: 'red' }}>{formErrors.email}</span>
           )}
+          <label>
+            Password:
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+            />
+          </label>
+          {formErrors.password && (
+            <span style={{ color: 'red' }}>{formErrors.password}</span>
+          )}
+          <label>
+            Confirm Password:
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+            />
+          </label>
+          {formErrors.confirmPassword && (
+            <span style={{ color: 'red' }}>{formErrors.confirmPassword}</span>
+          )}
+
+          <label htmlFor="monthOfBirth">
+            Month of birth:
+            <select name="" id="monthOfBirth">
+              {monthOptions}
+            </select>
+          </label>
 
           <label>
             Do you play games?
@@ -141,6 +177,7 @@ function App() {
           )}
 
           <button type="submit">Submit</button>
+          {sucessMessage && <h1>{sucessMessage}</h1>}
         </form>
       )}
       {showRHF && <Form />}

@@ -58,11 +58,17 @@ describe('App Component', () => {
       target: { value: 'Chess' },
     });
 
-    // Trigger form submission
+    fireEvent.change(screen.getByLabelText('Password:'), {
+      target: { value: '1234' },
+    });
+    fireEvent.change(screen.getByLabelText('Confirm Password:'), {
+      target: { value: '1234' },
+    });
+
     fireEvent.click(screen.getByRole('button', { name: /submit/i }));
 
-    // Check if the success message or the next step is displayed
-    // (You might need to modify this based on your actual application behavior)
-    // expect(screen.getByText(/form submitted successfully/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/form submitted successfully/i)
+    ).toBeInTheDocument();
   });
 });
