@@ -40,8 +40,6 @@ export function ShadForm() {
   const watchPlayGames = form.watch('playGames');
 
   function onSubmit(values: z.infer<typeof formDataSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     try {
       console.log(values);
     } catch (error) {
@@ -150,7 +148,7 @@ export function ShadForm() {
           name="monthofBirth"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Month of Birth</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={'january'}>
                 <FormControl>
                   <SelectTrigger>

@@ -7,6 +7,14 @@ interface FormErrors {
   [key: string]: string | undefined;
 }
 
+export const monthOptions = Object.entries(mappedMonths).map(
+  ([value, label]) => (
+    <option value={value} key={value}>
+      {label}
+    </option>
+  )
+);
+
 function NakedForm() {
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [successMessage, setSuccessMessage] = useState('');
@@ -38,12 +46,6 @@ function NakedForm() {
       monthofBirth: value as keyof typeof mappedMonths,
     });
   };
-
-  const monthOptions = Object.entries(mappedMonths).map(([value, label]) => (
-    <option value={value} key={value}>
-      {label}
-    </option>
-  ));
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
