@@ -4,6 +4,8 @@ import Form from './components/Form';
 import { Button } from '@/components/ui/button';
 import { ShadForm } from './components/ShadForm';
 import NakedForm from './components/NakedForm';
+import { ThemeProvider } from './components/ThemeProvider';
+import { ModeToggle } from './components/ModeToggle';
 
 function App() {
   const [showZodOnly, setShowZodOnly] = useState<boolean>(true);
@@ -11,7 +13,7 @@ function App() {
   const [showShad, setShowShad] = useState<boolean>(false);
 
   return (
-    <>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="flex gap-4 mb-4">
         <Button
           onClick={() => {
@@ -40,11 +42,12 @@ function App() {
         >
           Show ShadCN
         </Button>
+        <ModeToggle />
       </div>
       {showZodOnly && <NakedForm />}
       {showRHF && <Form />}
       {showShad && <ShadForm />}
-    </>
+    </ThemeProvider>
   );
 }
 
