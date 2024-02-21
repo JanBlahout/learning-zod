@@ -1,20 +1,22 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import App from './App';
+import NakedForm from './NakedForm';
 
-describe('App Component', () => {
+describe('NakedForm Component', () => {
   it('renders the form with input fields and a submit button', () => {
-    render(<App />);
+    render(<NakedForm />);
 
     // Check if the form elements are rendered
-    expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/do you play games/i)).toBeInTheDocument();
+    expect(screen.getByText(/username/i)).toBeInTheDocument();
+    expect(screen.getByText(/email/i)).toBeInTheDocument();
+    expect(screen.getByText(/do you play games/i)).toBeInTheDocument();
+    const passwordInputFields = screen.getAllByText(/password/i);
+    expect(passwordInputFields).toHaveLength(2);
     expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
   });
 
   it('validates form and displays errors on submit', () => {
-    render(<App />);
+    render(<NakedForm />);
 
     // Trigger form submission without filling in any fields
     fireEvent.click(screen.getByRole('button', { name: /submit/i }));
@@ -29,7 +31,7 @@ describe('App Component', () => {
   });
 
   it('validates form and displays errors when playing games without entering a favorite game', () => {
-    render(<App />);
+    render(<NakedForm />);
 
     // Check the playGames checkbox
     fireEvent.click(screen.getByLabelText(/do you play games/i));
@@ -44,7 +46,7 @@ describe('App Component', () => {
   });
 
   it('submits the form successfully with valid data', () => {
-    render(<App />);
+    render(<NakedForm />);
 
     // Fill in valid data
     fireEvent.change(screen.getByLabelText(/username/i), {
