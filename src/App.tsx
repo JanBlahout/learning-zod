@@ -14,7 +14,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="flex gap-4 mb-4 justify-center">
+      <div className="flex gap-4 mb-4 justify-center flex-wrap">
         <Button
           onClick={() => {
             setShowZodOnly(true);
